@@ -19,8 +19,8 @@ function App() {
       <footer>
         <p>
           Source code:{" "}
-          <a href="https://github.com/burntcarrot/heapview">
-            https://github.com/burntcarrot/heapview
+          <a href="https://github.com/davidwallacejackson/heapview">
+            https://github.com/davidwallacejackson/heapview
           </a>
         </p>
       </footer>
