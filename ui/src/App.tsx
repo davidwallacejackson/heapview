@@ -1,10 +1,13 @@
+import { useState } from "react";
 import "./App.css";
 import { GraphView } from "./GraphView";
 import { HeapRecordsView } from "./HeapRecordsView";
 import { Sidebar } from "./Sidebar";
 import { Tabs } from "./Tabs";
+import { TabTypes } from "./types";
 
 function App() {
+  const [activeTab, setActiveTab] = useState<TabTypes>("records");
   return (
     <>
       <header>
@@ -14,10 +17,14 @@ function App() {
 
       <Sidebar />
 
-      <Tabs />
+      <Tabs
+        activeTab={activeTab}
+        onClickTab={setActiveTab}
+        onResetZoom={() => {}}
+      />
+
       <div id="content">
-        <HeapRecordsView />
-        <GraphView />
+        {activeTab === "records" ? <HeapRecordsView /> : <GraphView />}
       </div>
 
       <footer>

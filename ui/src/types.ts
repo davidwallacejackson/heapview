@@ -1,3 +1,5 @@
+export type TabTypes = "records" | "graph";
+
 export interface PointerData {
   Index: number;
   Address: string;
@@ -24,4 +26,20 @@ export interface HeapRecordInfoResponse {
 export interface HeapRecordInfo {
   heapRecordType: string;
   heapRecordTypeStr: string;
+}
+
+export interface GraphData {
+  nodes: NodeData[];
+  links: LinkData[];
+}
+
+export interface NodeData {
+  address: number;
+  id: number;
+  label: string;
+}
+
+export interface LinkData {
+  source: number;
+  target: number;
 }

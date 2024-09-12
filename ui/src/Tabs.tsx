@@ -1,18 +1,36 @@
-export interface TabsProps {}
+import { TabTypes } from "./types";
 
-export function Tabs(props: TabsProps) {
+export interface TabsProps {
+  activeTab: TabTypes;
+  onClickTab: (tab: TabTypes) => void;
+  onResetZoom: () => void;
+}
+
+export function Tabs({ activeTab, onClickTab, onResetZoom }: TabsProps) {
   return (
     <div id="tabs">
-      <button id="recordsTab" className="tab-button">
+      <button
+        id="recordsTab"
+        className="tab-button"
+        onClick={() => onClickTab("records")}
+      >
         Records
       </button>
-      <button id="graphTab" className="tab-button">
+      <button
+        id="graphTab"
+        className="tab-button"
+        onClick={() => onClickTab("graph")}
+      >
         Graph
       </button>
       <input type="text" id="searchInput" placeholder="Search..." />
-      <div id="graphControls" style={{ display: "none" }}>
-        <button id="resetZoom">Reset Zoom</button>
-      </div>
+      {activeTab === "graph" ? (
+        <div id="graphControls">
+          <button id="resetZoom" onClick={onResetZoom}>
+            Reset Zoom
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

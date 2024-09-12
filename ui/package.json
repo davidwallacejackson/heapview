@@ -5,10 +5,11 @@
   "type": "module",
   "dependencies": {
     "@tanstack/react-virtual": "^3.10.7",
+    "@types/d3": "^7.4.3",
     "concurrently": "^9.0.0",
+    "d3": "^7.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-fetch-hook": "^1.9.5",
     "swr": "^2.2.5"
   },
   "devDependencies": {

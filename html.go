@@ -18,8 +18,13 @@ type templateData struct {
 	GraphData   string
 }
 
-func GenerateHTML(records []heaputil.RecordData, graphContent string) (string, error) {
+func GenerateHTML(records []heaputil.RecordData, graphContent map[string]any) (string, error) {
 	tmpl, err := template.ParseFiles("index.html")
+	if err != nil {
+		return "", err
+	}
+
+	graphJson, err := json.Marshal(graphContent)
 	if err != nil {
 		return "", err
 	}
@@ -27,7 +32,7 @@ func GenerateHTML(records []heaputil.RecordData, graphContent string) (string, e
 	data := templateData{
 		RecordTypes: GetUniqueRecordTypes(records),
 		Records:     records,
-		GraphData:   graphContent,
+		GraphData:   string(graphJson),
 	}
 
 	var htmlBuilder strings.Builder
@@ -39,10 +44,10 @@ func GenerateHTML(records []heaputil.RecordData, graphContent string) (string, e
 	return htmlBuilder.String(), nil
 }
 
-func GenerateGraph(rd *bufio.Reader) (string, error) {
+func GenerateGraph(rd *bufio.Reader) (map[string]any, error) {
 	err := record.ReadHeader(rd)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	nodes := []map[string]interface{}{}
@@ -107,12 +112,7 @@ func GenerateGraph(rd *bufio.Reader) (string, error) {
 		"links": links,
 	}
 
-	jsonData, err := json.Marshal(graphData)
-	if err != nil {
-		return "", err
-	}
-
-	return string(jsonData), nil
+	return graphData, nil
 }
 
 func ParseNameAndAddress(input string) (name, address string) {
