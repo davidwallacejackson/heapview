@@ -11,10 +11,14 @@ function App() {
         <h1>HeapView</h1>
         <p>a heap dump viewer for Go heap dumps</p>
       </header>
-      <Sidebar heapRecordTypes={[]} />
+
+      <Sidebar />
+
       <Tabs />
-      <HeapRecordsView heapRecords={[]} />
-      <GraphView />
+      <div id="content">
+        <HeapRecordsView />
+        <GraphView />
+      </div>
 
       <footer>
         <p>

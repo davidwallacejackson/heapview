@@ -1,14 +1,17 @@
-import { HeapRecordType } from "./types";
+import { useRecordInfo } from "./hooks";
 
-interface SidebarProps {
-  heapRecordTypes: HeapRecordType[];
-}
-export function Sidebar({ heapRecordTypes: recordTypes }: SidebarProps) {
+interface SidebarProps {}
+export function Sidebar({}: SidebarProps) {
+  const { data } = useRecordInfo();
   return (
     <div id="sidebar">
-      {recordTypes.map((recordType) => (
-        <div className="record-type" data-type={recordType.RecordType}>
-          {recordType.RecordTypeStr}
+      {data?.heapRecordTypes.map((recordType) => (
+        <div
+          className="record-type"
+          data-type={recordType.heapRecordType}
+          key={recordType.heapRecordType}
+        >
+          {recordType.heapRecordTypeStr}
         </div>
       ))}
     </div>

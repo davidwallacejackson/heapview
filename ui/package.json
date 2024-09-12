@@ -3,15 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
   "dependencies": {
+    "@tanstack/react-virtual": "^3.10.7",
+    "concurrently": "^9.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-fetch-hook": "^1.9.5",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -25,5 +23,13 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run dev:ui\" \"npm run dev:server\"",
+    "dev:ui": "vite",
+    "dev:server": "cd .. && go run . -file=$HEAPDUMP_FILE",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   }
 }

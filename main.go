@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -11,6 +12,12 @@ import (
 
 	"github.com/burntcarrot/heaputil"
 )
+
+type recordPage struct {
+	Records *[]heaputil.RecordData `json:"heapRecords"`
+	Total   int                    `json:"total"`
+	Cursor  int                    `json:"cursor"`
+}
 
 func main() {
 	filePath := flag.String("file", "", "Path to the heap dump file")
@@ -43,6 +50,45 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to parse records: %v", err)
 	}
+
+	http.HandleFunc("/api/records", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		page := recordPage{
+			Records: &records,
+			Total:   len(records),
+			Cursor:  0,
+		}
+
+		enc := json.NewEncoder(w)
+
+		err := enc.Encode(page)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error writing response: %v", err), http.StatusInternalServerError)
+		}
+	})
+
+	http.HandleFunc("/api/record-info", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		enc := json.NewEncoder(w)
+
+		err := enc.Encode(map[string]any{"heapRecordTypes": GetUniqueRecordTypes(records)})
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error writing response: %v", err), http.StatusInternalServerError)
+		}
+	})
+
+	http.HandleFunc("/api/graph", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		enc := json.NewEncoder(w)
+
+		err := enc.Encode(graphContent)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Error writing response: %v", err), http.StatusInternalServerError)
+		}
+	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		html, err := GenerateHTML(records, graphContent)

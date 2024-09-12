@@ -6,8 +6,8 @@ import (
 )
 
 type RecordInfo struct {
-	RecordType    record.RecordType
-	RecordTypeStr string
+	RecordType    record.RecordType `json:"heapRecordType"`
+	RecordTypeStr string            `json:"heapRecordTypeStr"`
 }
 
 func GetUniqueRecordTypes(records []heaputil.RecordData) []RecordInfo {

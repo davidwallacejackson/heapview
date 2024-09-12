@@ -13,7 +13,7 @@ import (
 )
 
 type templateData struct {
-	RecordTypes []RecordInfo
+	RecordTypes []RecordInfo ``
 	Records     []heaputil.RecordData
 	GraphData   string
 }
